@@ -237,14 +237,14 @@ TARGET_KERNEL_BINARIES: $(KERNEL_CONFIG)
 			echo "Building DTBs"; \
 			$(call make-kernel-target,dtbs); \
 		fi
-	$(hide) if grep -q '=m' $(KERNEL_CONFIG); then \
+	$(hide) if grep -q '^CONFIG_MODULES=y' $(KERNEL_CONFIG); then \
 			echo "Building Kernel Modules"; \
 			$(call make-kernel-target,modules); \
 		fi
 
 .PHONY: INSTALLED_KERNEL_MODULES
 INSTALLED_KERNEL_MODULES: depmod-host
-	$(hide) if grep -q '=m' $(KERNEL_CONFIG); then \
+	$(hide) if grep -q '^CONFIG_MODULES=y' $(KERNEL_CONFIG); then \
 			echo "Installing Kernel Modules"; \
 			$(call make-kernel-target,INSTALL_MOD_PATH=$(MODULES_INTERMEDIATES) modules_install); \
 			kernel_release=$$(cat $(KERNEL_RELEASE)) \
